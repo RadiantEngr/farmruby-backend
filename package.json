@@ -7,7 +7,8 @@
   "author": "RadiantEngr <onaolapo.ak@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "jest --verbose --detectOpenHandles ./tests/test.ts"
   },
   "keywords": [
     "heroku"
@@ -16,23 +17,32 @@
     "node": "14.15.4"
   },
   "dependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
+    "babel-preset-env": "^1.7.0",
     "bcrypt": "^5.0.0",
+    "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
+    "helmet": "^4.4.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jest": "^26.6.3",
     "joi": "^17.3.0",
     "jwt-simple": "^0.5.6",
     "mongodb-memory-server": "^6.9.3",
     "mongoose": "^5.11.14",
     "morgan": "~1.9.1",
     "nodemailer": "^6.4.17",
+    "supertest": "^6.1.3",
+    "ts-jest": "^26.5.0",
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.12.13",
     "@types/bcrypt": "^3.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.11",
@@ -40,6 +50,7 @@
     "@types/mongoose": "^5.10.3",
     "@types/morgan": "^1.9.2",
     "@types/nodemailer": "^6.4.0",
+    "@types/supertest": "^2.0.10",
     "nodemon": "^2.0.7"
   }
 }

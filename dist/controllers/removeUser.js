@@ -35,59 +35,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var User = require("../models/user").User;
-var jwt_simple_1 = __importDefault(require("jwt-simple"));
-var verifyUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, otpProvidedByUser, user, fullName, password, token, secret, payload, otpSentToUser, err_1;
+var user_1 = require("../models/user");
+var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user, data, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                email = req.params.email;
-                otpProvidedByUser = req.body.otpProvidedByUser;
-                if (!otpProvidedByUser) {
-                    return [2 /*return*/, res.status(400).json({ Error: "OTP is required" })];
-                }
-                return [4 /*yield*/, User.findOne({ email: email })];
+                id = req.params.id;
+                return [4 /*yield*/, user_1.User.findById(id)];
             case 1:
                 user = _a.sent();
-                if (user.isVerified) {
+                if (!user) {
                     return [2 /*return*/, res
-                            .status(400)
-                            .json({ Error: "Your are already a verified user" })];
+                            .status(404)
+                            .json({ Error: "The user you are trying to delete does not exist" })];
                 }
-                fullName = user.fullName, password = user.password, token = user.token;
-                secret = fullName + "-" + password;
-                payload = jwt_simple_1.default.decode(token, secret);
-                otpSentToUser = payload.random;
-                if (otpSentToUser !== otpProvidedByUser) {
-                    return [2 /*return*/, res.status(400).json({ Error: "Incorrect details" })];
-                }
-                return [4 /*yield*/, User.findOneAndUpdate({ email: email }, {
-                        $set: {
-                            isVerified: true,
-                            token: null,
-                            updatedAt: Date.now()
-                        },
-                    })];
+                return [4 /*yield*/, user_1.User.findByIdAndDelete(id)];
             case 2:
-                _a.sent();
-                res
-                    .status(200)
-                    .json({
-                    Success: "Email verification Successful! Your registration is now complete",
-                });
-                return [3 /*break*/, 4];
+                data = _a.sent();
+                return [2 /*return*/, res.status(400).json({ Message: "This user has been deleted", data: data })];
             case 3:
                 err_1 = _a.sent();
-                res.status(401).json({ Error: err_1.message });
-                return [3 /*break*/, 4];
+                return [2 /*return*/, res.status(400).json({ Error: err_1.message })];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-exports.default = verifyUser;
+exports.default = deleteUser;
