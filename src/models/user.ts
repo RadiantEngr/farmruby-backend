@@ -15,7 +15,7 @@ const User = mongoose.model(
     },
     password: {
       type: String,
-      minlength: 8,
+      minlength: 4,
       required: true,
     },
     isVerified: {
@@ -40,7 +40,7 @@ const validateUser = (user: any) => {
   const schema = Joi.object({
     fullName: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
+    password: Joi.string().min(4).required(),
     isVerified: Joi.boolean(),
     token: Joi.string(),
   });
