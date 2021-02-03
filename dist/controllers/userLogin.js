@@ -42,10 +42,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var jwt_simple_1 = __importDefault(require("jwt-simple"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var user_1 = require("../models/user");
+var mailer_1 = __importDefault(require("../externalServices/mailer"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, passwordEntered, user, password, _id, fullName, isPasswordValid, token, err_1;
+    var _a, email, passwordEntered, user, password, _id, fullName, isVerified, random, heading, content, secret, token_1, isPasswordValid, token, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -57,14 +58,29 @@ var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 if (!user) {
                     return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
                 }
-                password = user.password, _id = user._id, fullName = user.fullName;
+                password = user.password, _id = user._id, fullName = user.fullName, isVerified = user.isVerified;
+                if (!isVerified) {
+                    random = Math.floor(100000 + Math.random() * 900000);
+                    heading = "EMAIL VERIFICATION";
+                    content = "Your one time password is " + random + ". Kindly type in this OTP to complete your registration.\nThank you!";
+                    secret = fullName + "-" + password;
+                    token_1 = jwt_simple_1.default.encode({
+                        random: random,
+                        email: email,
+                    }, secret);
+                    mailer_1.default(heading, content, email);
+                    return [2 /*return*/, res.status(400).json({
+                            Message: "Verify your email! An OTP has just been sent to your mail",
+                            isVerified: isVerified
+                        })];
+                }
                 return [4 /*yield*/, bcrypt_1.default.compare(passwordEntered, password)];
             case 2:
                 isPasswordValid = _b.sent();
                 if (!isPasswordValid) {
                     return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
                 }
-                token = jwt_simple_1.default.encode({ _id: _id, }, "" + process.env.JWT_SECRET);
+                token = jwt_simple_1.default.encode({ _id: _id }, "" + process.env.JWT_SECRET);
                 return [2 /*return*/, res.status(200).json({ _id: _id, fullName: fullName, token: token })];
             case 3:
                 err_1 = _b.sent();

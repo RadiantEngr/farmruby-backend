@@ -13,7 +13,6 @@ const verifyUser = async (req: Request, res: Response) => {
     }
 
       const user = await User.findOne({ email });
-      console.log(user);
       
     if (user.isVerified) {
       return res

@@ -55,7 +55,6 @@ var verifyUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 return [4 /*yield*/, User.findOne({ email: email })];
             case 1:
                 user = _a.sent();
-                console.log(user);
                 if (user.isVerified) {
                     return [2 /*return*/, res
                             .status(400)
