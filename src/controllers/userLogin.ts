@@ -8,7 +8,11 @@ dotenv.config();
 
 const userLogin = async (req: Request, res: Response) => {
   try {
+    console.log(req.body);
+    
     const { email, passwordEntered } = req.body;
+    console.log(email, passwordEntered);
+    
     const user = await User.findOne({ email });
 
     if (!user) {
