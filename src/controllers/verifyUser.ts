@@ -44,7 +44,7 @@ const verifyUser = async (req: Request, res: Response) => {
       .status(200)
       .json({
         Success:
-          "Email verification Successful! You are successfully signed up",
+          "Email verification Successful! Your registration is now complete",
       });
   } catch (err) {
     res.status(401).json({ Error: err.message });
