@@ -49,6 +49,7 @@ var signUp = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 7, , 8]);
+                console.log(req.body);
                 _a = validateUser(req.body), error = _a.error, value = _a.value;
                 console.log({ Error: error });
                 console.log({ Value: value });
