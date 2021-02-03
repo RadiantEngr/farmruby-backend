@@ -1,0 +1,15 @@
+version: 2.1
+node: circleci/node@4.1.0
+jobs:
+    build:
+        working_directory: ~/farmruby-backend
+        docker:
+            - image: circleci/node:14.15.4
+        steps:
+            - checkout
+            - run:
+                name: install-packages
+                command: yarn
+            - run:
+                name: test
+                command: yarn test
