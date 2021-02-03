@@ -50,7 +50,9 @@ var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 3, , 4]);
+                console.log(req.body);
                 _a = req.body, email = _a.email, passwordEntered = _a.passwordEntered;
+                console.log(email, passwordEntered);
                 return [4 /*yield*/, user_1.User.findOne({ email: email })];
             case 1:
                 user = _b.sent();
