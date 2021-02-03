@@ -6,6 +6,8 @@ import sendMail from "../externalServices/mailer";
 
 const signUp = async (req: Request, res: Response) => {
   try {
+    console.log(req.body);
+    
     const { error, value } = validateUser(req.body);
     console.log({Error: error});
     
