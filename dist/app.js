@@ -13,6 +13,7 @@ var app = express_1.default();
 app.set("views", path_1.default.join(__dirname, "views"));
 app.set("view engine", "jade");
 app.use(morgan_1.default("dev"));
+app.use(cors());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(cookie_parser_1.default());
