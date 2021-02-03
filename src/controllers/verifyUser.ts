@@ -36,6 +36,7 @@ const verifyUser = async (req: Request, res: Response) => {
         $set: {
           isVerified: true,
           token: null,
+          updatedAt: Date.now()
         },
       }
     );
