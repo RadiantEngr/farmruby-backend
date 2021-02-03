@@ -50,10 +50,13 @@ var signUp = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 0:
                 _b.trys.push([0, 7, , 8]);
                 _a = validateUser(req.body), error = _a.error, value = _a.value;
+                console.log({ Error: error });
+                console.log({ Value: value });
                 if (error) {
                     throw Error(error.details[0].message);
                 }
                 fullName = value.fullName, email = value.email, password = value.password;
+                console.log({ Value: value });
                 if (fullName.split(" ").length < 2) {
                     return [2 /*return*/, res.status(400).json({ Error: "Please enter your first and last names" })];
                 }

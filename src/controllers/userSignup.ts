@@ -7,11 +7,16 @@ import sendMail from "../externalServices/mailer";
 const signUp = async (req: Request, res: Response) => {
   try {
     const { error, value } = validateUser(req.body);
+    console.log({Error: error});
+    
+    console.log({Value: value});
+    
     if (error) {
       throw Error(error.details[0].message);
     }
 
-      const { fullName, email, password } = value;
+    const { fullName, email, password } = value;
+    console.log({Value: value})
       if (fullName.split(" ").length < 2) {
           return res.status(400).json({Error: "Please enter your first and last names"})
       }
