@@ -45,31 +45,33 @@ var user_1 = require("../models/user");
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, passwordEntered, user, password, _id, fullName, isVerified, isPasswordValid, token, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var email, passwordEntered, user, password, _id, fullName, isVerified, isPasswordValid, token, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 3, , 4]);
                 console.log(req.body);
-                _a = req.body, email = _a.email, passwordEntered = _a.passwordEntered;
-                console.log(email, passwordEntered);
+                email = req.body.email;
+                passwordEntered = req.body.password;
+            
                 return [4 /*yield*/, user_1.User.findOne({ email: email })];
             case 1:
-                user = _b.sent();
+                user = _a.sent();
                 if (!user) {
                     return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
                 }
                 password = user.password, _id = user._id, fullName = user.fullName, isVerified = user.isVerified;
                 return [4 /*yield*/, bcrypt_1.default.compare(passwordEntered, password)];
             case 2:
-                isPasswordValid = _b.sent();
+                isPasswordValid = _a.sent();
                 if (!isPasswordValid) {
                     return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
                 }
                 token = jwt_simple_1.default.encode({ _id: _id }, "" + process.env.JWT_SECRET);
+
                 return [2 /*return*/, res.status(200).json({ Message: "Login successful!", _id: _id, fullName: fullName, token: token })];
             case 3:
-                err_1 = _b.sent();
+                err_1 = _a.sent();
                 return [2 /*return*/, res.status(500).json({ Error: err_1.message })];
             case 4: return [2 /*return*/];
         }

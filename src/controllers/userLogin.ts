@@ -10,9 +10,9 @@ const userLogin = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
     
-    const { email, passwordEntered } = req.body;
-    console.log(email, passwordEntered);
-    
+    const { email } = req.body;
+    const passwordEntered = req.body.password;
+
     const user = await User.findOne({ email });
 
     if (!user) {
