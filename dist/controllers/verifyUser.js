@@ -79,7 +79,7 @@ var verifyUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 res
                     .status(200)
                     .json({
-                    Success: "Email verification Successful! You are successfully signed up",
+                    Success: "Email verification Successful! Your registration is now complete",
                 });
                 return [3 /*break*/, 4];
             case 3:

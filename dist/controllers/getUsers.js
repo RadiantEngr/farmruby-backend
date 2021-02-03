@@ -35,46 +35,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var jwt_simple_1 = __importDefault(require("jwt-simple"));
-var bcrypt_1 = __importDefault(require("bcrypt"));
+exports.findUser = exports.findUsers = void 0;
 var user_1 = require("../models/user");
-var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, passwordEntered, user, password, _id, fullName, isVerified, isPasswordValid, token, err_1;
+var findUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var users, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
-                console.log(req.body);
-                email = req.body.email;
-                passwordEntered = req.body.password;
-            
-                return [4 /*yield*/, user_1.User.findOne({ email: email })];
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, user_1.User.find()];
             case 1:
-                user = _a.sent();
-                if (!user) {
-                    return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
+                users = _a.sent();
+                if (!users) {
+                    return [2 /*return*/, res.status(404).json({ Message: "No data found" })];
                 }
-                password = user.password, _id = user._id, fullName = user.fullName, isVerified = user.isVerified;
-                return [4 /*yield*/, bcrypt_1.default.compare(passwordEntered, password)];
+                res.status(200).json(users);
+                return [3 /*break*/, 3];
             case 2:
-                isPasswordValid = _a.sent();
-                if (!isPasswordValid) {
-                    return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
-                }
-                token = jwt_simple_1.default.encode({ _id: _id }, "" + process.env.JWT_SECRET);
-
-                return [2 /*return*/, res.status(200).json({ Message: "Login successful!", _id: _id, fullName: fullName, token: token })];
-            case 3:
                 err_1 = _a.sent();
-                return [2 /*return*/, res.status(500).json({ Error: err_1.message })];
-            case 4: return [2 /*return*/];
+                return [2 /*return*/, res.status(400).json({ Error: err_1.message })];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-exports.default = userLogin;
+exports.findUsers = findUsers;
+var findUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                id = req.params.id;
+                return [4 /*yield*/, user_1.User.findById(id)];
+            case 1:
+                user = _a.sent();
+                if (!user) {
+                    return [2 /*return*/, res.status(404).json({ Message: "No data found" })];
+                }
+                res.status(200).json(user);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                return [2 /*return*/, res.status(400).json({ Erroe: err_2.message })];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.findUser = findUser;
