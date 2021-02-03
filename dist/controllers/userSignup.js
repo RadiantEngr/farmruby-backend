@@ -40,73 +40,63 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a = require("../models/user"), User = _a.User, validateUser = _a.validateUser;
-var jwt_simple_1 = __importDefault(require("jwt-simple"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var mailer_1 = __importDefault(require("../externalServices/mailer"));
 var signUp = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, error, value, fullName, email, password, random, heading, content, payload, saltRounds, hashedPassword, secret, token, user, newUser, err_1;
+    var _a, error, value, fullName, email, password, saltRounds, hashedPassword, newUser, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _b.trys.push([0, 7, , 8]);
+                _b.trys.push([0, 3, , 4]);
                 _a = validateUser(req.body), error = _a.error, value = _a.value;
-                console.log({ Error: error });
-                console.log({ Value: value });
                 if (error) {
                     throw Error(error.details[0].message);
                 }
                 fullName = value.fullName, email = value.email, password = value.password;
-                console.log({ Value: value });
                 if (fullName.split(" ").length < 2) {
                     return [2 /*return*/, res.status(400).json({ Error: "Please enter your first and last names" })];
                 }
-                random = Math.floor(100000 + Math.random() * 900000);
-                heading = "EMAIL VERIFICATION";
-                content = "Your one time password is " + random + ". Kindly type in this OTP to complete your registration.\nThank you!";
-                payload = {
-                    random: random,
-                    email: email,
-                };
                 saltRounds = 10;
                 return [4 /*yield*/, bcrypt_1.default.hash(password, saltRounds)];
             case 1:
                 hashedPassword = _b.sent();
-                secret = fullName + "-" + hashedPassword;
-                token = jwt_simple_1.default.encode(payload, secret);
-                return [4 /*yield*/, User.findOne({ email: email })];
-            case 2:
-                user = _b.sent();
-                if (!user) return [3 /*break*/, 5];
-                if (!!user.isVerified) return [3 /*break*/, 4];
-                mailer_1.default(heading, content, email);
-                return [4 /*yield*/, User.findOneAndUpdate({ email: email }, {
-                        $set: {
-                            token: token,
-                        },
-                    })];
-            case 3:
-                _b.sent();
-                return [2 /*return*/, res.status(200).json({
-                        Message: "An OTP has been sent to your email address. Kindly enter the code to verify your email and complete your registration.",
-                    })];
-            case 4: return [2 /*return*/, res.status(400).json({ Error: "You are already signed up" })];
-            case 5:
-                mailer_1.default(heading, content, email);
+                // const secret = `${fullName}-${hashedPassword}`;
+                // const token = jwt.encode(payload, secret);
+                // const user = await User.findOne({ email });      
+                // if (user) {
+                // if (!user.isVerified) {
+                //   sendMail(heading, content, email);
+                //   await User.findOneAndUpdate(
+                //     { email },
+                //     {
+                //       $set: {
+                //         token,
+                //       },
+                //     }
+                //   );
+                //     return res.status(200).json({
+                //       Message:
+                //         "An OTP has been sent to your email address. Kindly enter the code to verify your email and complete your registration.",
+                //     });
+                //   }
+                //   return res.status(400).json({ Error: "You are already signed up" });
+                // }
+                // sendMail(heading, content, email);
                 value.password = hashedPassword;
-                value.token = token;
                 newUser = new User(value);
                 return [4 /*yield*/, newUser.save()];
-            case 6:
+            case 2:
                 _b.sent();
-                res.status(200).json({
-                    Message: "An OTP has been sent to your email address. Kindly enter the code to verify your email and complete your registration.",
-                });
-                return [3 /*break*/, 8];
-            case 7:
+                // res.status(200).json({
+                //   Message:
+                //     "An OTP has been sent to your email address. Kindly enter the code to verify your email and complete your registration.",
+                // });
+                res.status(200).json({ Message: "Registration was successful" });
+                return [3 /*break*/, 4];
+            case 3:
                 err_1 = _b.sent();
                 res.status(400).json({ Error: err_1.message });
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
