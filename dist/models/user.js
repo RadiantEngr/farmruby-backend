@@ -18,7 +18,7 @@ var User = mongoose_1.default.model("User", new mongoose_1.default.Schema({
     },
     password: {
         type: String,
-        minlength: 8,
+        minlength: 4,
         required: true,
     },
     isVerified: {
@@ -42,7 +42,7 @@ var validateUser = function (user) {
     var schema = joi_1.default.object({
         fullName: joi_1.default.string().required(),
         email: joi_1.default.string().email().required(),
-        password: joi_1.default.string().min(8).required(),
+        password: joi_1.default.string().min(4).required(),
         isVerified: joi_1.default.boolean(),
         token: joi_1.default.string(),
     });
