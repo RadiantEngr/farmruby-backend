@@ -52,9 +52,7 @@ const userLogin = async (req: Request, res: Response) => {
 
     const token = jwt.encode({ _id }, `${process.env.JWT_SECRET}`);
 
-    return res
-      .status(200)
-      .json({ Message: "Login successful!", _id, fullName, token });
+    return res.status(200).json({Message: "Login successful!", _id, fullName, token });
   } catch (err) {
     return res.status(500).json({ Error: err.message });
   }

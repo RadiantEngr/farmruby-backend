@@ -35,46 +35,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var jwt_simple_1 = __importDefault(require("jwt-simple"));
-var bcrypt_1 = __importDefault(require("bcrypt"));
 var user_1 = require("../models/user");
-var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, passwordEntered, user, password, _id, fullName, isVerified, isPasswordValid, token, err_1;
+var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user, data, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                console.log(req.body);
-                email = req.body.email;
-                passwordEntered = req.body.password;
-            
-                return [4 /*yield*/, user_1.User.findOne({ email: email })];
+                id = req.params.id;
+                return [4 /*yield*/, user_1.User.findById(id)];
             case 1:
                 user = _a.sent();
                 if (!user) {
-                    return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
+                    return [2 /*return*/, res
+                            .status(404)
+                            .json({ Error: "The user you are trying to delete does not exist" })];
                 }
-                password = user.password, _id = user._id, fullName = user.fullName, isVerified = user.isVerified;
-                return [4 /*yield*/, bcrypt_1.default.compare(passwordEntered, password)];
+                return [4 /*yield*/, user_1.User.findByIdAndDelete(id)];
             case 2:
-                isPasswordValid = _a.sent();
-                if (!isPasswordValid) {
-                    return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
-                }
-                token = jwt_simple_1.default.encode({ _id: _id }, "" + process.env.JWT_SECRET);
-
-                return [2 /*return*/, res.status(200).json({ Message: "Login successful!", _id: _id, fullName: fullName, token: token })];
+                data = _a.sent();
+                return [2 /*return*/, res.status(400).json({ Message: "This user has been deleted", data: data })];
             case 3:
                 err_1 = _a.sent();
-                return [2 /*return*/, res.status(500).json({ Error: err_1.message })];
+                return [2 /*return*/, res.status(400).json({ Error: err_1.message })];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-exports.default = userLogin;
+exports.default = deleteUser;
