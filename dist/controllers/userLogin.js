@@ -53,7 +53,6 @@ var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 console.log(req.body);
                 email = req.body.email;
                 passwordEntered = req.body.password;
-            
                 return [4 /*yield*/, user_1.User.findOne({ email: email })];
             case 1:
                 user = _a.sent();
@@ -68,7 +67,6 @@ var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     return [2 /*return*/, res.status(400).json({ Error: "Invalid email or password" })];
                 }
                 token = jwt_simple_1.default.encode({ _id: _id }, "" + process.env.JWT_SECRET);
-
                 return [2 /*return*/, res.status(200).json({ Message: "Login successful!", _id: _id, fullName: fullName, token: token })];
             case 3:
                 err_1 = _a.sent();
