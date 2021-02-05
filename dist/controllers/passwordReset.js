@@ -60,7 +60,7 @@ var requestPasswordReset = function (req, res) { return __awaiter(void 0, void 0
                 _id = user._id;
                 token = jwt_simple_1.default.encode({ _id: _id }, "" + process.env.JWT_SECRET);
                 subject = "PASSWORD RESET";
-                content = "Click the following link to reset your password:\nhttp://localhost:3000/apiv1/" + token;
+                content = "Click the following link to reset your password:\nhttp://localhost:3000/verify/" + token;
                 mailer_1.default(subject, content, email);
                 res.status(200).json({ message: "Email notification sent", token: token });
                 return [3 /*break*/, 3];

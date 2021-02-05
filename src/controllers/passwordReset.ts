@@ -17,7 +17,7 @@ const requestPasswordReset = async (req: Request, res: Response) => {
     const token = jwt.encode({ _id }, `${process.env.JWT_SECRET}`);
 
     const subject = "PASSWORD RESET";
-    const content = `Click the following link to reset your password:\nhttp://localhost:3000/apiv1/${token}`;
+    const content = `Click the following link to reset your password:\nhttp://localhost:3000/verify/${token}`;
     sendMail(subject, content, email);
 
     res.status(200).json({ message: "Email notification sent", token });
